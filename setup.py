@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 
-version = '0.8'
+import attachments
+version = attachments.__version__
 
 LONG_DESCRIPTION = """
 """
@@ -10,6 +11,10 @@ setup(
     version=version,
     description="A django app to manager attachments.",
     long_description=LONG_DESCRIPTION,
+    install_requires=[
+        "django-helper>=0.8.1",
+        "south>=0.7.2",
+        ],
     classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
