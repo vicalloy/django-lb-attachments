@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
-from attachments import ATTACHMENT_STORAGE_DIR
+from settings import ATTACHMENT_STORAGE_DIR
 
 def get_file_suffix(filename):
     idx = filename.rfind('.')

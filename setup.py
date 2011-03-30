@@ -1,6 +1,7 @@
 from setuptools import setup, find_packages
 
-version = "0.8.1"
+import attachments
+version = attachments.__version__
 
 LONG_DESCRIPTION = """
 """
