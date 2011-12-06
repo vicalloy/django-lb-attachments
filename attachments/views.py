@@ -1,7 +1,7 @@
 import django.dispatch
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
-from django.contrib.csrf.middleware import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
 from djangohelper.helper import flash_login_required, ajax_login_required, \
