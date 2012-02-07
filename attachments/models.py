@@ -8,6 +8,33 @@ from django.utils.translation import ugettext_lazy as _
 
 from settings import ATTACHMENT_STORAGE_DIR
 
+def format_filesize(size_in_bytes):
+    SIZE_KEYS = ['B', 'KB', 'MB']
+    try:
+        size_in_bytes = int(size_in_bytes)
+    except ValueError:
+        return size_in_bytes
+    if size_in_bytes<1:
+        return '%d %s'% (0,SIZE_KEYS[2])
+    size_in_bytes, divider = int(size_in_bytes), 1 << 20
+    major = size_in_bytes / divider
+    while not major:
+        major = size_in_bytes / divider
+        if not major:
+            divider >>= 10
+    rest = size_in_bytes - major * divider
+    scale = 10
+    fract = int(float(rest) / divider * scale)
+    cnt = 0
+    while divider:
+        cnt += 1
+        divider >>= 10
+    value = major + fract * (1.0 / scale)
+    ivalue = int(value)
+    if value == ivalue:
+        value = ivalue
+    return '%d %s'% (value,SIZE_KEYS[cnt - 1])
+
 def get_file_suffix(filename):
     idx = filename.rfind('.')
     return filename[idx+1:]
@@ -41,7 +68,6 @@ class Attachment(models.Model):
     org_filename = models.TextField()
     suffix = models.CharField(default = '', max_length=8, blank=True)
     is_img = models.BooleanField(default=False)
-    file_size = models.IntegerField(default=0)#not used now.
     num_downloads = models.IntegerField(default=0)
     description = models.TextField(default = '', blank=True)
     activated = models.BooleanField(default=False)
@@ -49,3 +75,6 @@ class Attachment(models.Model):
 
     def __unicode__(self):
         return '%s|%s' % (self.user.username, self.file)
+        
+    def get_formated_filesize(self):
+        return format_filesize(self.file.size)
