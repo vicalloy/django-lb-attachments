@@ -10,8 +10,6 @@ from djangohelper.helper import flash_login_required, ajax_login_required, \
 from forms import AttachmentForm
 from models import Attachment
 
-@csrf_exempt
-@flash_login_required
 def __ajax_upload(request):
     data = {'valid': False, 'errors': ugettext('no file')}
     attachment_form = AttachmentForm(user=request.user)
