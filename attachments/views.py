@@ -38,7 +38,7 @@ uploadify = csrf_exempt(flash_login_required(_ajax_upload))
 @ajax_login_required
 def ajax_delete(request):
     data = {'valid': False, 'errors': ugettext('some errors...')}
-    attachment_id = request.POST['id']
+    attachment_id = request.POST.get('id', 0) or request.GET.get('id', 0)
     attachment = Attachment.objects.get(pk=attachment_id)
     if (attachment.user != request.user):
         data['errors'] = ugettext('no right')
@@ -54,7 +54,7 @@ def ajax_change_descn(request):
     #TODO AJAX POST ONLY
     #TODO HANDEL AJAX ERROR
     data = {'valid': False, 'errors': ugettext('some errors...')}
-    attachment_id = request.POST['id']
+    attachment_id = request.POST.get('id', 0) or request.GET.get('id', 0)
     attachment = Attachment.objects.get(pk=attachment_id)
     if (attachment.user != request.user):
         data['errors'] = ugettext('no right')
