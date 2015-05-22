@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url, include
 
 from djangohelper.helper import flash_login_required, ajax_login_required
 
