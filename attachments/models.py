@@ -5,8 +5,14 @@ import os
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
-from settings import ATTACHMENT_STORAGE_DIR
+
+try:
+    AUTH_USER_MODEL = settings.AUTH_USER_MODEL
+except:
+    AUTH_USER_MODEL = User
+
 
 def format_filesize(size_in_bytes):
     SIZE_KEYS = ['B', 'KB', 'MB']
@@ -52,7 +58,7 @@ def upload_attachment_file_path(instance, filename):
     t = str(time()).replace('.', '_')
     r = randint(1, 1000)
     fn = '%s_%s.%s' % (t, r, suffix)
-    return os.path.join(ATTACHMENT_STORAGE_DIR, fn)
+    return os.path.join(settings.ATTACHMENT_STORAGE_DIR, fn)
 
 def get_filename(filename):
     """remove path"""
@@ -63,7 +69,7 @@ def get_filename(filename):
     return lt(lt(filename, '\\'), '/')
 
 class Attachment(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('Attachment'))
+    user = models.ForeignKey(AUTH_USER_MODEL, verbose_name=_('Attachment'))
     file = models.FileField(max_length=255, upload_to=upload_attachment_file_path)
     org_filename = models.TextField()
     suffix = models.CharField(default = '', max_length=8, blank=True)
